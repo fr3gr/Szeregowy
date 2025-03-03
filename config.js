@@ -8,5 +8,6 @@ export default {
     ticketChannelId: process.env.TICKET_PANEL_CHANNEL_ID,
     generalChannelId: process.env.GENERAL_CHANNEL_ID,
     rulesChannelId: process.env.RULES_CHANNEL_ID,
-    ticketCategoryId: process.env.TICKET_CATEGORY_ID, 
+    ticketCategoryId: process.env.TICKET_CATEGORY_ID,
+    autoRoleIds: process.env.AUTO_ROLE_IDS ? process.env.AUTO_ROLE_IDS.split(',') : [],
 };

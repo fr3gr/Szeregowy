@@ -3,7 +3,7 @@ import config from '../config.js';
 import logMessage from '../logs/logger.js';
 
 export default async function createTicketPanel(guild) {
-    logMessage('🎟 Próba utworzenia panelu ticketów...');
+    logMessage('🚨 Próba utworzenia panelu ticketów...');
 
     if (!guild) {
         logMessage('❌ Błąd: Brak obiektu guild!', 'error');
@@ -24,7 +24,7 @@ export default async function createTicketPanel(guild) {
         const existingPanels = messages.filter(msg => msg.embeds.length > 0 && msg.embeds[0].title === '📩 Wybierz opcję');
         
         if (existingPanels.size > 0) {
-            logMessage('🗑 Usuwanie starych paneli ticketów...');
+            logMessage('⛔️ Usuwanie starych paneli ticketów...');
             await Promise.all(existingPanels.map(msg => msg.delete()));
         }
 
