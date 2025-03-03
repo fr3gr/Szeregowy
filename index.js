@@ -25,6 +25,6 @@ client.on('interactionCreate', async (interaction) => {
     } catch (error) {
         logMessage(`❌ Błąd przy obsłudze interakcji: ${error.message}`, 'error');
     }
-});d
+});
 
 client.login(process.env.BOT_TOKEN);
