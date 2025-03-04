@@ -1,11 +1,11 @@
 import { Client, GatewayIntentBits } from 'discord.js';
 import handleButtonInteraction from './handlers/buttonHandler.js';
 import handleRecruitmentButtonInteraction from './handlers/recruitmentButtonHandler.js';
-import handleMemberJoin from './handlers/memberJoinHandler.js';
+import guildMemberAdd from './events/guildMemberAdd.js';
 import logMessage from './logs/logger.js';
 import dotenv from 'dotenv';
 import config from './config.js';
-import ready from './events/ready.js'; // Importujemy poprawiony event "ready"
+import ready from './events/ready.js';
 
 dotenv.config();
 
@@ -19,13 +19,12 @@ const client = new Client({
 });
 
 client.once('ready', async () => {
-    await ready(client); // Wywołujemy obsługę ready, która zawiera logi oraz tworzenie panelu ticketów
+    await ready(client);
+    logMessage(`ℹ️ Załadowane autoRoles: ${JSON.stringify(config.autoRoles)}`, 'info');
 });
 
 client.on('interactionCreate', async (interaction) => {
     try {
-        const guild = await client.guilds.fetch(config.guildId);
-
         if (interaction.isButton()) {
             if (['zdal', 'zdal_bez_szkolenia', 'nie_zdal'].includes(interaction.customId)) {
                 await handleRecruitmentButtonInteraction(interaction);
@@ -34,12 +33,12 @@ client.on('interactionCreate', async (interaction) => {
             }
         }
     } catch (error) {
-        logMessage(`❌ Błąd przy obsłudze interakcji: ${error.message}`, 'error');
+        logMessage(`❌ Error handling interaction: ${error.message}`, 'error');
     }
 });
 
 client.on('guildMemberAdd', async (member) => {
-    await handleMemberJoin(member);
+    await guildMemberAdd(member);
 });
 
 client.login(process.env.BOT_TOKEN);

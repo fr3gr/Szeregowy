@@ -5,45 +5,45 @@ import config from '../config.js';
 export default async function handleRecruitmentButtonInteraction(interaction) {
     const { customId, user, guild } = interaction;
 
-    // Sprawdzamy, czy użytkownik ma odpowiednią rolę do obsługi przycisków
-    const roleId = config.adminRoleId; // Przypisz odpowiednie ID roli w configu
+    // Check if user has required role to handle buttons
+    const roleId = config.adminRoleId; // Assign the appropriate role ID in config
     const member = await guild.members.fetch(user.id);
 
     if (!member.roles.cache.has(roleId)) {
-        logMessage(`❌ ${user.tag} próbował obsłużyć panel rekrutacyjny, ale nie ma odpowiednich uprawnień.`, 'warn');
+        logMessage(`❌ ${user.tag} tried to handle recruitment panel but lacks permissions.`, 'warn');
         return interaction.reply({
-            content: '❌ Nie masz uprawnień do obsługi tych przycisków.',
+            content: '❌ You do not have permission to handle these buttons.',
             ephemeral: true
         });
     }
 
-    // Obsługa różnych przycisków
+    // Handle different button presses
     try {
         switch (customId) {
             case 'zdal':
-                await member.roles.add(config.soldierRoleId); // Dodanie roli "Żołnierz"
-                await member.roles.add(config.basicTrainingRoleId); // Dodanie roli "Szkolenie Podstawowe"
-                logMessage(`✅ ${user.tag} zdał rekrutację i otrzymał role: Żołnierz oraz Szkolenie Podstawowe.`);
+                await member.roles.add(config.soldierRoleId); // Add "Soldier" role
+                await member.roles.add(config.basicTrainingRoleId); // Add "Basic Training" role
+                logMessage(`✅ ${user.tag} passed recruitment and received roles: Soldier and Basic Training.`);
                 break;
             case 'zdal_bez_szkolenia':
-                await member.roles.add(config.soldierRoleId); // Tylko rola "Żołnierz"
-                logMessage(`✅ ${user.tag} zdał rekrutację bez szkolenia i otrzymał rolę: Żołnierz.`);
+                await member.roles.add(config.soldierRoleId); // Only "Soldier" role
+                logMessage(`✅ ${user.tag} passed recruitment without training and received role: Soldier.`);
                 break;
             case 'nie_zdal':
-                logMessage(`❌ ${user.tag} nie zdał rekrutacji.`);
+                logMessage(`❌ ${user.tag} failed recruitment.`);
                 break;
             default:
-                throw new Error('Nieznany przycisk!');
+                throw new Error('Unknown button!');
         }
 
         await interaction.update({
-            content: `✅ Zrealizowano opcję: ${customId}`,
+            content: `✅ Executed option: ${customId}`,
             components: []
         });
     } catch (error) {
-        logMessage(`❌ Błąd podczas obsługi przycisku: ${error.message}`, 'error');
+        logMessage(`❌ Error handling button: ${error.message}`, 'error');
         await interaction.reply({
-            content: '❌ Wystąpił błąd podczas obsługi tego przycisku.',
+            content: '❌ There was an error handling this button.',
             ephemeral: true
         });
     }

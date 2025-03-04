@@ -7,7 +7,6 @@ export default async function guildMemberAdd(member) {
     const guild = member.guild;
     const welcomeChannel = guild.channels.cache.get(config.notificationChannelId);
     const logChannel = guild.channels.cache.get(config.logChannelId);
-
     const joinDate = DateTime.now().setZone('Europe/Warsaw').toFormat('dd.LL.yyyy, HH:mm:ss');
 
     const embed = new EmbedBuilder()
@@ -26,21 +25,19 @@ export default async function guildMemberAdd(member) {
 
     try {
         if (welcomeChannel) {
-            welcomeChannel.send({ embeds: [embed] });
-            logMessage(`Wysłano powitanie dla użytkownika ${member.user.tag} na kanale powitania.`);
+            await welcomeChannel.send({ embeds: [embed] });
+            logMessage(`✅ Wysłano powitanie dla użytkownika ${member.user.tag}.`);
         } else {
-            logMessage(`Brak kanału powitania: ${config.notificationChannelId}.`);
+            logMessage(`⚠️ Brak kanału powitań (ID: ${config.notificationChannelId}).`, 'warn');
         }
 
         if (logChannel) {
-            logChannel.send(`[LOG] ${member.user.tag} dołączył do serwera. Data: ${joinDate}`);
-            logMessage(`Wysłano log o dołączeniu użytkownika ${member.user.tag}.`);
+            await logChannel.send(`[LOG] ${member.user.tag} dołączył do serwera. Data: ${joinDate}`);
+            logMessage(`✅ Wysłano log o dołączeniu użytkownika ${member.user.tag}.`);
         } else {
-            logMessage(`Brak kanału logów: ${config.logChannelId}.`);
+            logMessage(`⚠️ Brak kanału logów (ID: ${config.logChannelId}).`, 'warn');
         }
-
-        logMessage(`${member.user.tag} dołączył do serwera. Data: ${joinDate}`);
     } catch (error) {
-        logMessage(`Błąd przy przetwarzaniu dołączenia użytkownika ${member.user.tag}: ${error.message}`);
+        logMessage(`❌ Błąd przy powitaniu użytkownika ${member.user.tag}: ${error.message}`, 'error');
     }
 }

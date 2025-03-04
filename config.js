@@ -9,5 +9,5 @@ export default {
     generalChannelId: process.env.GENERAL_CHANNEL_ID,
     rulesChannelId: process.env.RULES_CHANNEL_ID,
     ticketCategoryId: process.env.TICKET_CATEGORY_ID,
-    autoRoleIds: process.env.AUTO_ROLE_IDS ? process.env.AUTO_ROLE_IDS.split(',') : [],
+    autoRoles: process.env.AUTO_ROLE_IDS ? process.env.AUTO_ROLE_IDS.split(',').map(id => id.trim()) : [],
 };

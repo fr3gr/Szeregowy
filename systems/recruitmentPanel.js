@@ -3,43 +3,43 @@ import config from '../config.js';
 import logMessage from '../logs/logger.js';
 
 export default async function createRecruitmentPanel(channel) {
-    logMessage('🎟 Tworzenie panelu z przyciskami do oceny rekrutacji...');
+    logMessage('🎟 Creating recruitment evaluation panel...');
 
     if (!channel) {
-        logMessage('❌ Błąd: Brak kanału do wysłania panelu!', 'error');
+        logMessage('❌ Error: No channel to send the panel to!', 'error');
         return;
     }
 
     try {
         const embed = new EmbedBuilder()
-            .setTitle('📝 Ocena Rekrutacji')
-            .setDescription('Wybierz odpowiednią opcję w zależności od wyników rekrutacji:')
+            .setTitle('📝 Recruitment Evaluation')
+            .setDescription('Select the appropriate option based on the recruitment results:')
             .setColor('#2ecc71')
             .setFooter({
                 text: 'Szeregowy | Projekt Wschód | © 2025',
-                iconURL: 'https://i.imgur.com/pjSZcfP.png' // Zamień to na link do logo
+                iconURL: 'https://i.imgur.com/pjSZcfP.png'
             });
 
-        // Tworzenie przycisków
+        // Create buttons
         const row = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setCustomId('zdal')
-                .setLabel('✅ Zdał')
+                .setLabel('✅ Passed')
                 .setStyle(ButtonStyle.Primary),
             new ButtonBuilder()
                 .setCustomId('zdal_bez_szkolenia')
-                .setLabel('🟢 Zdał bez szkolenia')
+                .setLabel('🟢 Passed without training')
                 .setStyle(ButtonStyle.Success),
             new ButtonBuilder()
                 .setCustomId('nie_zdal')
-                .setLabel('❌ Nie zdał')
+                .setLabel('❌ Failed')
                 .setStyle(ButtonStyle.Danger)
         );
 
         await channel.send({ embeds: [embed], components: [row] });
 
-        logMessage('✅ Panel rekrutacji z przyciskami został stworzony na kanale!');
+        logMessage('✅ Recruitment panel with buttons has been created on the channel!');
     } catch (error) {
-        logMessage(`❌ Błąd podczas tworzenia panelu rekrutacji: ${error.message}`, 'error');
+        logMessage(`❌ Error while creating the recruitment panel: ${error.message}`, 'error');
     }
 }
