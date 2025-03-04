@@ -32,7 +32,7 @@ export default async function createTicketPanel(guild) {
     logMessage(`✅ Found ticket panel channel: ${channel.name}`);
 
     try {
-        // Remove existing panels (if any)
+        // Usuwanie istniejących paneli (jeśli są)
         const messages = await channel.messages.fetch({ limit: 100 });
         const existingPanels = messages.filter(msg => msg.embeds.length > 0 && msg.embeds[0].title === '📩 Choose an option');
 
@@ -41,7 +41,7 @@ export default async function createTicketPanel(guild) {
             await Promise.all(existingPanels.map(msg => msg.delete()));
         }
 
-        // Create a new embed
+        // Tworzenie nowego embeda
         const embed = new EmbedBuilder()
             .setTitle('📩 Choose an option')
             .setDescription('🔹 **Recruitment** – Choose this option if you want to join our team.\n' +
@@ -53,7 +53,7 @@ export default async function createTicketPanel(guild) {
                 iconURL: 'https://i.imgur.com/pjSZcfP.png' 
             });
 
-        // Create buttons
+        // Tworzenie przycisków
         const row = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setCustomId('rekrutacja')
@@ -65,6 +65,7 @@ export default async function createTicketPanel(guild) {
                 .setStyle(ButtonStyle.Success)
         );
 
+        // Wysłanie panelu z przyciskami
         await channel.send({ embeds: [embed], components: [row] });
 
         logMessage('✅ Ticket panel has been created on the channel!');

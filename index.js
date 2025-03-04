@@ -21,6 +21,21 @@ const client = new Client({
 client.once('ready', async () => {
     await ready(client);
     logMessage(`ℹ️ Załadowane autoRoles: ${JSON.stringify(config.autoRoleIds)}`, 'info'); // ✅ poprawiona nazwa zmiennej
+
+    // Testowanie uprawnień bota
+    try {
+        const testChannel = client.channels.cache.get(config.ticketChannelId);
+        if (!testChannel) {
+            logMessage('❌ Ticket channel not found during bot permission check!', 'error');
+            return;
+        }
+
+        // Wysłanie testowej wiadomości w kanale
+        await testChannel.send('Test message to check bot permissions');
+        logMessage('✅ Test message sent successfully');
+    } catch (error) {
+        logMessage(`❌ Error sending test message: ${error.message}`, 'error');
+    }
 });
 
 client.on('interactionCreate', async (interaction) => {
