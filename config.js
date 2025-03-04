@@ -1,13 +1,15 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+console.log('🔍 DEBUG: AUTO_ROLE_IDS:', process.env.AUTO_ROLE_IDS);
+
 export default {
-    guildId: process.env.GUILD_ID,
-    logChannelId: process.env.LOG_CHANNEL_ID,
-    notificationChannelId: process.env.NOTIFICATION_CHANNEL_ID,
+    autoRoleIds: process.env.AUTO_ROLE_IDS ? process.env.AUTO_ROLE_IDS.split(',') : [],
+    adminRoleId: process.env.ADMIN_ROLE_ID,
+    soldierRoleId: process.env.SOLDIER_ROLE_ID,
+    basicTrainingRoleId: process.env.BASIC_TRAINING_ROLE_ID,
     ticketChannelId: process.env.TICKET_PANEL_CHANNEL_ID,
-    generalChannelId: process.env.GENERAL_CHANNEL_ID,
-    rulesChannelId: process.env.RULES_CHANNEL_ID,
-    ticketCategoryId: process.env.TICKET_CATEGORY_ID,
-    autoRoles: process.env.AUTO_ROLE_IDS ? process.env.AUTO_ROLE_IDS.split(',').map(id => id.trim()) : [],
+    notificationChannelId: process.env.NOTIFICATION_CHANNEL_ID,
+    logChannelId: process.env.LOG_CHANNEL_ID,
+    guildId: process.env.GUILD_ID,
 };

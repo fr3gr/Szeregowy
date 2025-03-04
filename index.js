@@ -3,11 +3,11 @@ import handleButtonInteraction from './handlers/buttonHandler.js';
 import handleRecruitmentButtonInteraction from './handlers/recruitmentButtonHandler.js';
 import guildMemberAdd from './events/guildMemberAdd.js';
 import logMessage from './logs/logger.js';
-import dotenv from 'dotenv';
+import dotenv from 'dotenv';  // ✅ Tylko jeden import dotenv!
 import config from './config.js';
 import ready from './events/ready.js';
 
-dotenv.config();
+dotenv.config(); // ✅ Ładowanie zmiennych z .env
 
 const client = new Client({
     intents: [
@@ -20,7 +20,7 @@ const client = new Client({
 
 client.once('ready', async () => {
     await ready(client);
-    logMessage(`ℹ️ Załadowane autoRoles: ${JSON.stringify(config.autoRoles)}`, 'info');
+    logMessage(`ℹ️ Załadowane autoRoles: ${JSON.stringify(config.autoRoleIds)}`, 'info'); // ✅ poprawiona nazwa zmiennej
 });
 
 client.on('interactionCreate', async (interaction) => {
@@ -41,4 +41,4 @@ client.on('guildMemberAdd', async (member) => {
     await guildMemberAdd(member);
 });
 
-client.login(process.env.BOT_TOKEN);
+client.login(process.env.DISCORD_TOKEN); // ✅ Poprawiona nazwa zmiennej

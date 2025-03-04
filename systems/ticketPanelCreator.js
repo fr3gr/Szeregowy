@@ -10,9 +10,22 @@ export default async function createTicketPanel(guild) {
         return;
     }
 
+    logMessage(`🔍 Fetching channels from guild: ${guild.name} (${guild.id})`);
+
+    if (!guild.channels) {
+        logMessage('❌ Error: guild.channels is undefined!', 'error');
+        return;
+    }
+
+    if (!guild.channels.cache) {
+        logMessage('❌ Error: guild.channels.cache is undefined!', 'error');
+        return;
+    }
+
     const channel = guild.channels.cache.get(config.ticketChannelId);
+
     if (!channel) {
-        logMessage('❌ Ticket panel channel not found!', 'error');
+        logMessage(`❌ Ticket panel channel not found! (ID: ${config.ticketChannelId})`, 'error');
         return;
     }
 
@@ -22,7 +35,7 @@ export default async function createTicketPanel(guild) {
         // Remove existing panels (if any)
         const messages = await channel.messages.fetch({ limit: 100 });
         const existingPanels = messages.filter(msg => msg.embeds.length > 0 && msg.embeds[0].title === '📩 Choose an option');
-        
+
         if (existingPanels.size > 0) {
             logMessage('⛔️ Deleting old ticket panels...');
             await Promise.all(existingPanels.map(msg => msg.delete()));
